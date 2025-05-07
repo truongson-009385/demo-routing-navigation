@@ -1,0 +1,39 @@
+{
+    "products": [
+        {
+            "id": 1,
+            "name": "Product 1",
+            "price": 10.99,
+            "description": "Description for Product 1",
+            "image": "https://images.squarespace-cdn.com/content/v1/53883795e4b016c956b8d243/1671853906962-RV08WWNIS1LTNE453MOX/Artboard%2B2.jpg?format=750w"
+        },
+        {
+            "id": 2,
+            "name": "Product 2",
+            "price": 20.99,
+            "description": "Description for Product 2",
+            "image": "https://images.squarespace-cdn.com/content/v1/53883795e4b016c956b8d243/1671853906962-RV08WWNIS1LTNE453MOX/Artboard%2B2.jpg?format=750w"
+        },
+        {
+            "id": 3,
+            "name": "Product 3",
+            "price": 30.99,
+            "description": "Description for Product 3",
+            "image": "https://images.squarespace-cdn.com/content/v1/53883795e4b016c956b8d243/1671853906962-RV08WWNIS1LTNE453MOX/Artboard%2B2.jpg?format=750w"
+        },
+        {
+            "id": 4,
+            "name": "Product 4",
+            "price": 40.99,
+            "description": "Description for Product 4",
+            "image": "https://images.squarespace-cdn.com/content/v1/53883795e4b016c956b8d243/1671853906962-RV08WWNIS1LTNE453MOX/Artboard%2B2.jpg?format=750w"
+        },
+        {
+            "id": 5,
+            "name": "Product 5",
+            "price": 50.99,
+            "description": "Description for Product 5",
+            "image": "https://images.squarespace-cdn.com/content/v1/53883795e4b016c956b8d243/1671853906962-RV08WWNIS1LTNE453MOX/Artboard%2B2.jpg?format=750w"
+        }
+    ]
+}
