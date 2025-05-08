@@ -4,26 +4,22 @@ Tài liệu này cung cấp hướng dẫn chi tiết về cách sử dụng h�
 
 ## 📦 Mục lục
 
-- [Nghiên cứu chủ yếu về App Router](#nghiên-cứu-chủ-yếu-về-app-router)
-    - [Lợi ích của App Router](#lợi-ích-của-app-router)
-    - [Hạn chế cần lưu ý](#hạn-chế-cần-lưu-ý)
+- [Tìm hiểu về App Router](#tìm-hiểu-về-app-router)
+  - [Ưu điểm](#ưu-điểm)
+  - [Nhược điểm](#nhược-điểm)
+  - [Cấu trúc file](#cấu-trúc-file)
 
-## Nghiên cứu chủ yếu về App Router
+## Tìm hiểu về App Router
 
-App Router là một trong những tính năng quan trọng của Next.js, giúp quản lý routing một cách hiệu quả và linh hoạt. Dưới đây là một số điểm nổi bật khi sử dụng App Router:
+App Router là một trong những tính năng quan trọng của Next.js, giúp quản lý routing một cách hiệu quả và linh hoạt. **Tự động hóa routing**: Dựa trên cấu trúc thư mục, App Router tự động ánh xạ các file trong thư mục `/app` thành các route tương ứng.
 
-- **Tự động hóa routing**: Dựa trên cấu trúc thư mục, App Router tự động ánh xạ các file trong thư mục `/app` thành các route tương ứng.
-- **Hỗ trợ dynamic routing**: Sử dụng các file có tên dạng `[param].tsx` để tạo các route động, cho phép truyền tham số qua URL.
-- **Tích hợp tốt với các tính năng khác của Next.js**: App Router hoạt động mượt mà với các tính năng như API Routes, Middleware, và Server Components.
-- **Tối ưu hóa hiệu suất**: Với khả năng prefetch và lazy loading, App Router giúp cải thiện tốc độ tải trang và trải nghiệm người dùng.
-
-### Lợi ích của App Router
+### Ưu điểm
 
 1. **Đơn giản hóa cấu trúc dự án**: Không cần phải định nghĩa các route thủ công, chỉ cần tổ chức file và thư mục hợp lý.
 2. **Tăng tính module hóa**: Mỗi route có thể được thiết kế như một module độc lập với các file như `page.tsx`, `layout.tsx`, `error.tsx`, v.v.
 3. **Hỗ trợ SEO tốt hơn**: Metadata riêng cho từng route có thể được định nghĩa trong file `head.tsx`.
 
-### Hạn chế cần lưu ý
+### Nhược điểm
 
 - **Phụ thuộc vào cấu trúc thư mục**: Việc thay đổi cấu trúc thư mục có thể ảnh hưởng đến các route hiện tại.
 - **Không hỗ trợ điều hướng tùy ý**: Điều hướng phải tuân theo cấu trúc thư mục, các trường hợp đặc biệt cần sử dụng Middleware để xử lý.
@@ -32,10 +28,10 @@ App Router là một công cụ mạnh mẽ, nhưng để sử dụng hiệu qu�
 
 Ví dụ: có trang About /app/about/page.tsx tương ứng với url là /about
 
-## Cấu trúc file
+### Cấu trúc file
 
 | File          | Mục đích sử dụng                                                                 |
-|---------------|----------------------------------------------------------------------------------|
+|:---------------|:----------------------------------------------------------------------------------|
 | page.tsx      | Component chính của route                                                        |
 | layout.tsx    | Dùng để bọc layout cho route và các route con                                    |
 | template.tsx  | Giao diện bọc route con, nhưng khi điều hướng sẽ render lại                      |
@@ -45,35 +41,35 @@ Ví dụ: có trang About /app/about/page.tsx tương ứng với url là /about
 | route.ts      | Tạo ra các API route                                                             |
 | head.tsx      | Metadata riêng cho route                                                         |
 
-### Các loại file chính trong App Router
+### Redirect - Điều hướng
 
-- **page.tsx**: Component chính của route, chứa nội dung hiển thị cho route.
-- **layout.tsx**: Dùng để bọc layout cho route và các route con, giúp tái sử dụng giao diện.
-- **template.tsx**: Tương tự như layout nhưng khi điều hướng, template sẽ render lại thay vì giữ nguyên.
-- **error.tsx**: Xử lý và hiển thị lỗi khi render route.
-- **loading.tsx**: Hiển thị trạng thái tải khi route đang được tải.
-- **not-found.tsx**: Hiển thị nội dung khi không tìm thấy route (trang 404).
-- **route.ts**: Định nghĩa các API route, cho phép xử lý logic server-side.
-- **head.tsx**: Định nghĩa metadata riêng cho từng route, hỗ trợ SEO tốt hơn.
-	+ <Link> Component
-	+ useRouter hook (Client Components)
-    
-    ```
-		//property
-		console.log(router.pathname); // Đường dẫn hiện tại (không bao gồm query string)
-		console.log(router.query); // Đối tượng chứa các tham số query
-		console.log(router.asPath); // Chuỗi đường dẫn đầy đủ (bao gồm query string)
-		console.log(router.isFallback); // Boolean cho biết trang có đang ở chế độ fallback hay không (với dynamic routes)
+1. `<Link>` Component
+1. `useRouter()` hook (Client Components)
+1. `redirect()` function (Server Components)
+1. native History API
 
-		//function
-		router.push(""); // push(url, as, options): Điều hướng đến một trang mới
-		router.replace(""); // replace(url, as, options): Tương tự push nhưng thay thế history thay vì thêm mới
-		router.back(); // Quay lại trang trước
-		router.reload(); // Tải lại trang hiện tại
-		router.prefetch(""); // Prefetch một trang để tải nhanh hơn khi điều hướng
-		
-		
-	+ redirect function (Server Components)
-	+ native History API có 2 loại: pushState, replaceState
+===================
 
-- Không thể điều hướng mà không theo directory, chỉ có thể dùng middleware để chuyển hướng(Redirect) tới trang muốn đến.
+#### 1. Link Component
+
+```tsx
+<ul className="flex space-x-4">
+    <li>
+        <Link href="/" className="hover:text-gray-400">
+            Home
+        </Link>
+    </li>
+    <li>
+        <Link href="/about" className="hover:text-gray-400">
+            About
+        </Link>
+    </li>
+    ...
+</ul>
+```
+
+#### 2. useRouter hook (Client Components)
+
+#### 3. Link Component (Server Components)
+
+#### 4. Link Component

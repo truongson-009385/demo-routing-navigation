@@ -7,22 +7,34 @@ export default function Header() {
                 <Link href={"/"} className="text-2xl font-bold">
                     Routing&Navigation
                 </Link>
-                <nav className="space-x-4">
-                    <Link href="/" className="hover:text-gray-400">
-                        Home
-                    </Link>
-                    <Link href="/about" className="hover:text-gray-400">
-                        About
-                    </Link>
-                    <Link href="/category" className="hover:text-gray-400">
-                        Category
-                    </Link>
-                    <Link href="/products" className="hover:text-gray-400">
-                        Products
-                    </Link>
-                    <Link href="/contact" className="hover:text-gray-400">
-                        Contact
-                    </Link>
+                <nav>
+                    <ul className="flex space-x-4">
+                        <li>
+                            <Link href="/" className="hover:text-gray-400">
+                                Home
+                            </Link>
+                        </li>
+                        <li>
+                            <Link href="/about" className="hover:text-gray-400">
+                                About
+                            </Link>
+                        </li>
+                        <li>
+                            <Link href="/category" className="hover:text-gray-400">
+                                Category
+                            </Link>
+                        </li>
+                        <li>
+                            <Link href="/products" className="hover:text-gray-400">
+                                Products
+                            </Link>
+                        </li>
+                        <li>
+                            <Link href="/contact" className="hover:text-gray-400">
+                                Contact
+                            </Link>
+                        </li>
+                    </ul>
                 </nav>
             </div>
         </header>
