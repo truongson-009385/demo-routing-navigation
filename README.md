@@ -3,7 +3,7 @@
 Tài liệu này cung cấp hướng dẫn chi tiết về cách sử dụng hệ thống Routing và Navigation trong Next.js, bao gồm cấu trúc thư mục, các loại file chính, và cách điều hướng hiệu quả trong ứng dụng.
 
 >Link demo sản phẩm
->[https://demo-routing-navigation.netlify.app/](https://demo-routing-navigation.netlify.app/){:target="_blank"}
+>[https://demo-routing-navigation.netlify.app/](https://demo-routing-navigation.netlify.app/)
 
 ## 📦 Mục lục
 
