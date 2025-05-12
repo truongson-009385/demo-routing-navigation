@@ -1,5 +1,5 @@
 import React from 'react';
-import Breadcrumb from '../../../components/ui/breadcrumb';
+import Breadcrumb from '@/components/ui/breadcrumb';
 
 export default async function ProductDetail({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params; // Giải quyết Promise để lấy giá trị id

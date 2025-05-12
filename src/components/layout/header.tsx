@@ -1,6 +1,6 @@
 'use client'
 
-import Link from "next/link";
+import NavLink from "../ui/navlink";
 
 export default function Header() {
 
@@ -10,44 +10,49 @@ export default function Header() {
 
     return (
         <header>
-            <div className="flex items-center justify-between p-4 bg-gray-800 text-white">
-                <Link href={"/"} className="text-2xl font-bold">
+            <div className="flex items-center justify-between p-4 shadow-md bg-slate-800">
+                <span className="text-2xl font-bold text-white">
                     Routing&Navigation
-                </Link>
+                </span>
                 <nav>
-                    <ul className="flex space-x-4">
+                    <ul className="flex items-center space-x-4">
                         <li>
-                            <Link href="/" className="hover:text-gray-400">
+                            <NavLink href="/">
                                 Home
-                            </Link>
+                            </NavLink>
                         </li>
                         <li>
-                            <Link href="/about" className="hover:text-gray-400">
+                            <NavLink href="/about">
                                 About
-                            </Link>
+                            </NavLink>
                         </li>
                         <li>
-                            <Link href="/category" className="hover:text-gray-400">
+                            <NavLink href="/category">
                                 Category
-                            </Link>
+                            </NavLink>
                         </li>
                         <li>
-                            <Link href="/products" className="hover:text-gray-400">
+                            <NavLink href="/products">
                                 Products
-                            </Link>
+                            </NavLink>
                         </li>
                         <li>
-                            <Link href="/feed" className="hover:text-gray-400">
+                            <NavLink href="/blogs">
+                                Blogs
+                            </NavLink>
+                        </li>
+                        <li>
+                            <NavLink href="/feed">
                                 Feed
-                            </Link>
+                            </NavLink>
                         </li>
                         <li>
-                            <Link href="/contact" className="hover:text-gray-400">
+                            <NavLink href="/contact">
                                 Contact
-                            </Link>
+                            </NavLink>
                         </li>
                         <li>
-                            <button onClick={() => handleOpenWindow()} className="hover:text-gray-400 bg-blue-600 px-2 py-1 rounded">
+                            <button onClick={() => handleOpenWindow()} className="btn-primary">
                                 Login
                             </button>
                         </li>

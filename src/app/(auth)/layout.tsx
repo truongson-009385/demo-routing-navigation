@@ -1,7 +1,19 @@
+import type { Metadata } from "next";
+import "@/app/globals.css";
+
+export const metadata: Metadata = {
+    title: "Auth",
+    description: "Authentication pages",
+};
+
 export default function Layout({ children }: { children: React.ReactNode }) {
     return (
-        <div className="min-h-screen">
-            <main className="p-4">{children}</main>
-        </div>
+        <html lang="en">
+            <body className="antialiased">
+                <div className="container mx-auto px-4 py-8">
+                    {children}
+                </div>
+            </body>
+        </html>
     );
 }

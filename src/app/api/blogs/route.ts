@@ -1,10 +1,6 @@
 import { Blog } from '@/types';
 import { NextResponse } from 'next/server';
-
-const blogs: Blog[] = [
-    { id: 1, title: 'First Blog', content: 'This is the first blog.' },
-    { id: 2, title: 'Second Blog', content: 'This is the second blog.' },
-];
+import { blogs } from './db';
 
 // GET: Lấy ra danh sách các bài viết
 export async function GET() {
