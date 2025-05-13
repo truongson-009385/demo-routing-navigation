@@ -102,6 +102,10 @@ export default async function ProductDetail({ params }: { params: Promise<{ id: 
 
 ### 4. Chặn route
 
+Khái niệm về `Intercepting Routes` dùng để chặn một yêu cầu đi đến route cụ thể và thay đổi hành vi của nó, thường sử dụng để hiển thị 1 nội dung khác hoặc xử lý logic mà không thay đổ URL. Một số ứng dụng thực tế như: modal, drawer, tab, ...
+
+
+
 ## Navigation - Điều hướng
 
 ### 1. Linking

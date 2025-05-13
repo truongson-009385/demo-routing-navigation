@@ -2,10 +2,12 @@
 
 import { Blog } from '@/types';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 
 const BlogsPage = () => {
     const [blogs, setBlogs] = useState<Blog[]>([]);
+    const router = useRouter();
 
     useEffect(() => {
         const fetchBlogs = async () => {
@@ -46,6 +48,9 @@ const BlogsPage = () => {
                         >
                             Read More
                         </Link>
+                        <li>
+                            <button onClick={() => router.push('/blogs/2')}>Bài viết 2</button>
+                        </li>
                     </li>
                 ))}
             </ul>
