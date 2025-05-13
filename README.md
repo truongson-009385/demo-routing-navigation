@@ -77,12 +77,13 @@ Ví dụ minh hoạ:
 
 ```plaintext
 /app
-├── products
-│   ├── [id]
-│   |    ├── page.tsx
-│   ├── page.tsx
-├── layout.tsx
-├── page.tsx
+├── (home)
+│   ├── products
+│   ├── ├── [id] 
+│   ├── |    ├── page.tsx
+│   ├── ├── page.tsx
+├── ├── layout.tsx
+├── ├── page.tsx
 ```
 
 ```tsx
@@ -104,15 +105,62 @@ export default async function ProductDetail({ params }: { params: Promise<{ id: 
 
 Khái niệm về `Intercepting Routes` dùng để chặn một yêu cầu đi đến route cụ thể và thay đổi hành vi của nó, thường sử dụng để hiển thị 1 nội dung khác hoặc xử lý logic mà không thay đổ URL. Một số ứng dụng thực tế như: modal, drawer, tab, ...
 
-
-
 ## Navigation - Điều hướng
+
+Navigation - Điều hướng là quá trình chuyển sang 1 trang khác mà không cần phải tải lại toàn bộ trang. Cách này chỉ được sử dụng khi người dùng tác động
 
 ### 1. Linking
 
+Chúng ta sẽ sử dụng `Link Component` để điều hướng trang web, và sau khi render sang html `Link Component` sẽ được hiển thị dưới dạng thẻ a . Ví dụ cụ thể:
+
+```tsx
+// components/layout/header.tsx
+import NavLink from "../ui/navlink";
+
+export default function Header() {
+    return (
+      <ul className="flex items-center space-x-4">
+          <li>
+              <NavLink href="/">
+                  Home
+              </NavLink>
+          </li>
+          <li>
+              <NavLink href="/about">
+                  About
+              </NavLink>
+          </li>
+      </ul>
+    )
+}
+```
+
 ### 2. Navigation
 
+Sử dụng `useRouter` của `"next/navigation"` để trong xử lý logic hoặc handler sự kiện trong môi trường client side
+
+```tsx
+// app/(home)/about/page.tsx
+'use client'
+
+import { useRouter } from "next/navigation";
+
+export default function About() {
+  const router = useRouter();
+  
+  return (
+    <button 
+      onClick={() => router.push('/')} 
+    >
+      Go Back to Home
+    </button>
+  );
+}
+```
+
 ### 3. Other
+
+Redirect là việc chuyển người dùng đến một URL khác, trước hoặc trong lúc trang đang load. Có thể sử dụng ở 2 môi trường server và client
 
 ## Redirecting - Chuyển hướng
 

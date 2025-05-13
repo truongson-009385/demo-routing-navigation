@@ -6,8 +6,6 @@ export async function GET(
   request: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
-  console.log(request.url);
-
   const { id } = await params;
 
   // Validate id
