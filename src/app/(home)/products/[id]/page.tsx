@@ -26,11 +26,13 @@ export default async function ProductDetail({ params }: { params: Promise<{ id: 
     <div className="container mx-auto px-4 py-8">
       <Breadcrumb items={breadcrumbItems} />
       <div className="mt-8 flex flex-col md:flex-row items-center">
-        <div className="w-full md:w-1/2">
+        <div className="w-full md:w-1/2 h-96 overflow-x-hidden">
           <Image
             src={product.image}
             alt={product.name}
-            className="rounded-lg shadow-lg w-full"
+            width={400}
+            height={200}
+            className="rounded-lg shadow-lg w-full h-full object-cover"
           />
         </div>
         <div className="w-full md:w-1/2 md:pl-8 mt-6 md:mt-0">

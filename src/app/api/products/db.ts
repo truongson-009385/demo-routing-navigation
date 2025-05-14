@@ -5,7 +5,7 @@ export const products: Product[] = [
         id: i + 1,
         name: `Product ${i + 1}`,
         description: `Description for product ${i + 1}.`,
-        image: 'https://picsum.photos/400/200',
+        image: 'https://picsum.photos/200/300',
         price: Math.floor(Math.random() * 1000) + 50,
         inStock: Math.random() > 0.5,
     })),

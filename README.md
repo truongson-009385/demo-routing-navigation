@@ -137,7 +137,9 @@ export default function Header() {
 
 ### 2. Navigation
 
-Sử dụng `useRouter` của `"next/navigation"` để trong xử lý logic hoặc handler sự kiện trong môi trường client side
+Sử dụng hook `useRouter` của `"next/navigation"` để trong xử lý logic hoặc handler sự kiện trong môi trường client side. Dùng để điều hướng đến một URL mới ở trang hiện tại, và sẽ có 2 cách chính là `push`, `replace`
+
+`router.push('/new-url')` dùng khi muốn điều hướng sang trang mới và đồng thời thêm mới đường dẫn thay đổi vào lịch sử trình duyệt trình duyệt
 
 ```tsx
 // app/(home)/about/page.tsx
@@ -152,19 +154,102 @@ export default function About() {
     <button 
       onClick={() => router.push('/')} 
     >
-      Go Back to Home
+      Go Back to Home (Hook)
     </button>
   );
 }
 ```
 
-### 3. Other
+`router.replace('/updated-url')` cái cũng sẽ điều hướng sang trang mới, nhưng khác `push` ở chỗ ở `push` sẽ tạo mới lịch sử nhưng cái này sẽ cập nhật lại url trang hiện tại trong lịch sử trình duyệt
 
-Redirect là việc chuyển người dùng đến một URL khác, trước hoặc trong lúc trang đang load. Có thể sử dụng ở 2 môi trường server và client
+```tsx
+// app/(home)/contact/page.tsx
+'use client'
+
+import { useRouter } from "next/navigation";
+
+export default function Contact() {
+  const router = useRouter();
+  
+  return (
+    <button 
+      onClick={() => router.replace('/')} 
+    >
+      Go Back to Home (Hook)
+    </button>
+  );
+}
+```
+
+Thằng hook `useRouter` của `"next/navigation"` vẫn còn một số thuộc tính như: pathname, query, asPath, isFallback để lấy thông tin URL hay các phương thức khác như: back(), reload(), prefetch().  Vì nó không liên quan lắm đến phần này nên mình sẽ không đưa vào để tránh loạn, anh em chịu khó tìm hiểu thêm sau nhé
+
+### 3. Window
+
+Nếu như bạn đã học về javascript thì cũng sẽ biết thằng window cũng có một số phương thức để điều hướng trang. Cũng vậy thằng next.js vẫn sẽ cho phép sử dụng các phương thức như vậy, có 2 cái cần nói đến ở đây đó là `window.history.pushState` và `window.history.replaceState`.
+
+>Lưu ý: `window.history.pushState` và `window.history.replaceState` trong nextjs cũng có phương thức tương tự là sử dụng hook `useRoute` với `router.push('/new-url')` và `router.replace('/updated-url')`. Cho nên phần window này chỉ nêu ra để biết là có thể sử dụng mà thôi chứ không hay dùng
+
+`pushState(stateObj, title, url)` Nó sẽ thêm mới 1 đường dẫn vào lịch sử của trình duyệt, và điều hướng trang đến url mới mà không phải reload lại trang hiện tại.
+
+```tsx
+// app/(home)/about/page.tsx
+'use client'
+
+export default function About() {
+  const pushWindow = (url: string) => {
+    window.history.pushState({}, '', url);
+  }
+
+  return (
+    <button
+        onClick={() => pushWindow('/')}
+      >
+        Go Back to Home (Window)
+      </button>
+  );
+}
+```
+
+`replaceState(stateObj, title, url)` Cái này nó sẽ thay thế URL trang hiện tại và thay thế cả trong lịch sử trình duyệt
+
+```tsx
+// app/(home)/contact/page.tsx
+'use client'
+
+export default function Contact() {
+  const replaceWindow = (url: string) => {
+    if (typeof window !== 'undefined') {
+      window.history.replaceState({}, '', url);
+    }
+  }
+  
+  return (
+    <button
+        onClick={() => replaceWindow('/')}
+        className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg mt-8 shadow-lg transition-all duration-300 transform hover:scale-105"
+      >
+      Go Back to Home (Window)
+    </button>
+  );
+}
+```
+
+### 3. So sánh giữa các phương thức thay đổi URL
+
+| Phương thức               | Thay đổi URL | Điều hướng | Lịch sử trình duyệt | Tương thích Next.js Router | Ghi chú |
+|---------------------------|--------------|--------------|------------------------|---------------------------|---------|
+| `window.history.replaceState` | ✅ Có        | ❌ Không     | ❌ Thay thế đường dẫn hiện tại | ❌ Không đồng bộ | Chỉ thay đổi URL, không kích hoạt điều hướng hay cập nhật Next.js Router |
+| `router.replace()` (Next.js) | ✅ Có       | ✅ Không     | ❌ Thay thế đường dẫn hiện tại | ✅ Có (đồng bộ) | Nên dùng thay thế để đồng bộ với Next.js |
+| `window.history.pushState` | ✅ Có        | ❌ Không     | ✅ Thêm đường dẫn mới       | ❌ Không đồng bộ | Thêm URL mới vào lịch sử trình duyệt |
+| `router.push()` (Next.js)  | ✅ Có        | ✅ Không     | ✅ Thêm đường dẫn mới       | ✅ Có (đồng bộ) | Đồng bộ với Next.js Router, hỗ trợ tải trước trang |
 
 ## Redirecting - Chuyển hướng
 
+Redirect là việc chuyển người dùng đến một URL khác, trước hoặc trong lúc trang đang load. Có thể sử dụng ở 2 môi trường server và client
+
 ### 1. Server
+
+redirect
 
 ### 2. Client
 
@@ -190,10 +275,10 @@ Redirect là việc chuyển người dùng đến một URL khác, trước ho�
 
 ### 2. Middleware
 
+### 3. Route caching
+
 ## Other
 
 ### 1. Localization - Ngôn ngữ
-
-### 2. Route cache
 
 ## Route không theo thư mục

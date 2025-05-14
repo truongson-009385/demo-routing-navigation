@@ -4,7 +4,11 @@ import { useRouter } from "next/navigation";
 
 export default function About() {
   const router = useRouter();
-  
+
+  const pushWindow = (url: string) => {
+    window.history.pushState({}, '', url);
+  }
+
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-b from-blue-100 to-blue-300">
       <h1 className="text-5xl font-extrabold text-center mt-10 text-blue-800 drop-shadow-lg">
@@ -17,7 +21,13 @@ export default function About() {
         onClick={() => router.push('/')} 
         className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg mt-8 shadow-lg transition-all duration-300 transform hover:scale-105"
       >
-        Go Back to Home
+        Go Back to Home (Hook)
+      </button>
+      <button
+        onClick={() => pushWindow('/')}
+        className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg mt-8 shadow-lg transition-all duration-300 transform hover:scale-105"
+      >
+        Go Back to Home (Window)
       </button>
     </div>
   );
