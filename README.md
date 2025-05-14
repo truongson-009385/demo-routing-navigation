@@ -239,9 +239,9 @@ export default function Contact() {
 | Phương thức               | Thay đổi URL | Điều hướng | Lịch sử trình duyệt | Tương thích Next.js Router | Ghi chú |
 |---------------------------|--------------|--------------|------------------------|---------------------------|---------|
 | `window.history.replaceState` | ✅ Có        | ❌ Không     | ❌ Thay thế đường dẫn hiện tại | ❌ Không đồng bộ | Chỉ thay đổi URL, không kích hoạt điều hướng hay cập nhật Next.js Router |
-| `router.replace()` (Next.js) | ✅ Có       | ✅ Không     | ❌ Thay thế đường dẫn hiện tại | ✅ Có (đồng bộ) | Nên dùng thay thế để đồng bộ với Next.js |
+| `router.replace()` (Next.js) | ✅ Có       | ✅ Có     | ❌ Thay thế đường dẫn hiện tại | ✅ Có (đồng bộ) | Nên dùng thay thế để đồng bộ với Next.js |
 | `window.history.pushState` | ✅ Có        | ❌ Không     | ✅ Thêm đường dẫn mới       | ❌ Không đồng bộ | Thêm URL mới vào lịch sử trình duyệt |
-| `router.push()` (Next.js)  | ✅ Có        | ✅ Không     | ✅ Thêm đường dẫn mới       | ✅ Có (đồng bộ) | Đồng bộ với Next.js Router, hỗ trợ tải trước trang |
+| `router.push()` (Next.js)  | ✅ Có        | ✅ Có     | ✅ Thêm đường dẫn mới       | ✅ Có (đồng bộ) | Đồng bộ với Next.js Router, hỗ trợ tải trước trang |
 
 ## Redirecting - Chuyển hướng
 
@@ -253,9 +253,15 @@ redirect
 
 ### 2. Client
 
+permanentRedirect
+
 ### 3. Next config
 
+redirects in next.config.js
+
 ### 4. Middleware
+
+NextResponse.redirect in Middleware
 
 ## Giao diện
 

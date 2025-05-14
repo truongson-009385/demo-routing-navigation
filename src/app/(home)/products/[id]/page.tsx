@@ -1,3 +1,5 @@
+'use server';
+
 import Breadcrumb from '@/components/ui/breadcrumb';
 import { Product } from '@/types';
 import Image from 'next/image';
