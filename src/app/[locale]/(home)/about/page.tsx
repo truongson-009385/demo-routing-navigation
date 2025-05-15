@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation";
 
-export default function About() {
+export default function AboutPage() {
   const router = useRouter();
 
   const pushWindow = (url: string) => {

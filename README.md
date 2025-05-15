@@ -695,14 +695,367 @@ Hình ảnh chỉ mang tính chất minh hoạ, mời mọi người vào [link 
 
 ### 1. Route Handlers
 
+Next.JS cung cấp khả năng tạo ra các đầu API với các phương thức HTTP request (GET, POST, PUT, PATCH, DELETE) ngay trong thư mục `app/api` của ứng dụng Next mà không phải có 1 server riêng biệt để xử lý việc này gọi là `Next Server`.
+
+Sau đây là ví dụ cụ thể
+
+```ts
+// app/api/products/db.ts
+
+import { Product } from "@/types";
+
+export const products: Product[] = [
+    ...Array.from({ length: 50 }, (_, i) => ({
+        id: i + 1,
+        name: `Product ${i + 1}`,
+        description: `Description for product ${i + 1}.`,
+        image: 'https://picsum.photos/200/300',
+        price: Math.floor(Math.random() * 1000) + 50,
+        inStock: Math.random() > 0.5,
+    })),
+];
+```
+
+```ts
+// app/api/products/route.ts
+
+import { products } from '@/app/api/products/db';
+import { Product } from '@/types';
+import { NextResponse } from 'next/server';
+
+export async function GET(request: Request) {
+  const { searchParams } = new URL(request.url);
+  const page = parseInt(searchParams.get('page') || '1');
+  const limit = parseInt(searchParams.get('limit') || '10');
+  const startIndex = (page - 1) * limit;
+  const response = {
+    total: products.length,
+    totalPages: Math.ceil(products.length / limit),
+    currentPage: page,
+    itemsPerPage: limit,
+    data: products.slice(startIndex, startIndex + limit),
+  };
+  return NextResponse.json(response);
+}
+
+export async function POST(req: Request) {
+  const body: Product = await req.json();
+  products.push(body);
+  return NextResponse.json({ message: 'Product added successfully', product: body });
+}
+```
+
+Sử dụng Dynamic Route để xoá, sửa, lấy ra từng sản phẩm 1 
+
+```ts
+import { products } from '@/app/api/products/db';
+import { Product } from '@/types';
+import { NextResponse } from 'next/server';
+
+async function validateId(params: Promise<{ id: string }>) {
+  const { id } = await params;
+  if (!id || isNaN(Number(id))) {
+    throw new Error('Invalid ID');
+  }
+  return Number(id);
+}
+
+export async function GET(request: Request, { params }: { params: Promise<{ id: string }> }) {
+  try {
+    const id = await validateId(params);
+    const product = products.find((p) => p.id === id);
+    if (!product) {
+      return NextResponse.json({ error: 'Product not found' }, { status: 404 });
+    }
+    return NextResponse.json(product);
+  } catch (error) {
+    return NextResponse.json({ error: error.message }, { status: error.message === 'Invalid ID' ? 400 : 500 });
+  }
+}
+
+export async function DELETE(request: Request, { params }: { params: Promise<{ id: string }> }) {
+  try {
+    const id = await validateId(params);
+    const productIndex = products.findIndex((p) => p.id === id);
+    if (productIndex === -1) {
+      return NextResponse.json({ error: 'Product not found' }, { status: 404 });
+    }
+    products.splice(productIndex, 1);
+    return NextResponse.json({ message: 'Product deleted successfully' });
+  } catch (error) {
+    return NextResponse.json({ error: error.message }, { status: error.message === 'Invalid ID' ? 400 : 500 });
+  }
+}
+```
+
+Hình ảnh chỉ mang tính chất minh hoạ, mời mọi người vào [link demo](https://demo-routing-navigation.netlify.app/dynamic-route/products) để xem chi tiết ạ
+
+![demo linking](./images/next-server-list.png)
+
+![demo linking](./images/next-server-add.png)
+
+![demo linking](./images/next-server-delete.png)
+
 ### 2. Middleware
 
+`Middleware` hay `middleware.ts` là file được đặt cùng cấp với thư mục `app`
+
+Cấu trúc file Middleware:
+
+```ts
+// middleware.ts
+import { NextRequest, NextResponse } from 'next/server';
+
+export function middleware(request: NextRequest) {
+
+  // Logic
+
+  return NextResponse.next();
+}
+```
+
+- NextRequest: Là request gửi đến.
+- NextResponse: Dùng để trả về response, chuyển hướng, hoặc tiếp tục xử lý request.
+- NextResponse.next(): Cho phép request tiếp tục đến route tiếp theo.
+- NextResponse.redirect(): Chuyển hướng đến một URL khác.
+- NextResponse.rewrite(): Viết lại URL mà không thay đổi URL hiển thị trên trình duyệt.
+
+Chúng ta cũng có thể cấu hình để `middleware` sử dụng cho 1 số trường hợp cụ thể. Ví dụ:
+
+```ts
+export const config = {
+  matcher: ['/api/:path*'], // chỉ sử dụng cho route /api
+};
+```
+
 ### 3. Route caching
+
+Next.JS cũng cấp khả năng caching với các task vụ như: fetching data, route handlers(Next server).
+
+Ví dụ cụ thể:
+
+```tsx
+// app/(home)/blogs/page.tsx
+
+'use client';
+
+import { Blog } from '@/types';
+import Link from 'next/link';
+import React, { useEffect, useState } from 'react';
+
+export default function BlogsPage() {
+  const [blogs, setBlogs] = useState<Blog[]>([]);
+
+  useEffect(() => {
+    const fetchBlogs = async () => {
+      try {
+        const response = await fetch('http://localhost:3000/api/blogs', {
+          next: { revalidate: 10 }
+        });
+        if (!response.ok) {
+          throw new Error('Failed to fetch blogs');
+        }
+        const data = await response.json();
+        setBlogs(data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchBlogs();
+  }, []);
+
+  return (
+    <div>
+      // Code giao diện
+    </div>
+  );
+};
+```
+
+Các kiểu caching hay dùng:
+- cache: 'force-cache': Cache vĩnh viễn (mặc định trong App Router).
+- cache: 'no-store': Không cache, luôn fetch dữ liệu mới.
+- next: { revalidate: 10 }: Cache dữ liệu và làm mới sau 10 giây.
+
+Hoặc ở Router Handller
+
+```ts
+// app/api/products/route.ts
+
+import { products } from '@/app/api/products/db';
+import { Product } from '@/types';
+import { NextResponse } from 'next/server';
+
+export async function GET(request: Request) {
+  const { searchParams } = new URL(request.url);
+  
+  // Code xử lý logic
+
+  return NextResponse.json(response, {
+    headers: {
+      'Cache-Control': 'public, s-maxage=60, stale-while-revalidate=30',
+    },
+  });
+  //public: cho phép bất kì bộ nhớ nào cũng có thể lưu cache
+  //s-maxage=60: Cache dữ liệu 60 giây trước khi lấy dữ liệu mới từ server
+  //stale-while-revalidate=30: trong vòng 30 giây vẫn sẽ trả về nội dung cũ nhưng lấy ngầm dữ liệu mới về.
+
+}
+```
 
 ## Other
 
 ### 1. Localization - Ngôn ngữ
 
-## Route không theo thư mục
+`Phần đa ngôn ngữ` - `i18n` này chúng ta sẽ sử dụng thư viện `next-intl` để thiết kế bộ ngôn ngữ riêng và chuyển đổi nó. Quá trình cài đặt khá phức tạp nên mình chỉ làm demo và gửi anh em [link](https://next-intl.dev/docs/getting-started/app-router/with-i18n-routing) tải nhé.
 
+```plaintext
+├── messages
+│   ├── en.json
+│   └── vi.json
+```
 
+```json
+// messages/en.json
+
+{
+  "HomePage": {
+    "title": "Home",
+    "text": "Welcome to our about page! We are dedicated to providing the best services and experiences for our users."
+  }
+}
+```
+
+```json
+// messages/vi.json
+
+{
+  "HomePage": {
+    "title": "Trang chủ",
+    "text": "Chào mừng bạn đến với trang của chúng tôi! Chúng tôi dành riêng để cung cấp các dịch vụ và trải nghiệm tốt nhất cho người dùng của chúng tôi."
+  }
+}
+```
+
+Hình ảnh chỉ mang tính chất minh hoạ, mời mọi người vào [link demo](https://demo-routing-navigation.netlify.app/dynamic-route/demo1) để xem chi tiết ạ
+
+![demo linking](./images/i18n.gif)
+
+### 2. Route không theo thư mục
+
+Sau đây là phần điều hướng không theo cấu trúc thư mục:
+
+```plaintext
+/app
+├── [...slug]
+|   ├── layout.tsx
+|   ├── page.tsx
+```
+
+```tsx
+// app/[...slug]/layout.tsx
+
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode
+}) {
+  return (
+    <html lang="en">
+      <body>{children}</body>
+    </html>
+  )
+}
+```
+
+Component muốn trả về
+
+```tsx
+// components/pages/demo1.tsx
+
+'use client';
+
+import React from 'react';
+
+const Example: React.FC = () => {
+console.log('First log');
+
+    return (
+        <div>
+            <h1>Example Component 1</h1>
+            <p>This is an example interface for demonstration purposes.</p>
+        </div>
+    );
+};
+
+export default Example;
+```
+
+Fake data lấy ra từ database
+
+```ts
+// app/api/components/routes.ts
+
+export async function GET() {
+    const data = [
+        {
+            url: "/dynamic-route/demo1",
+            component: "demo1",
+        },
+        {
+            url: "/dynamic-route/demo2",
+            component: "demo2",
+        }
+    ];
+    
+
+    return new Response(JSON.stringify(data), {
+        headers: { "Content-Type": "application/json" },
+    });
+}
+```
+
+Xử lý logic để trả về Component theo URL
+
+```tsx
+// app/[...slug]/page.tsx
+
+import { notFound } from 'next/navigation';
+import ComponentA from '@/components/pages/demo1';
+import ComponentB from '@/components/pages/demo2';
+
+const componentMap: { [key: string]: React.FC } = {
+  demo1: ComponentA,
+  demo2: ComponentB,
+};
+
+async function getRouteConfig(slug: string[]) {
+  const path = '/' + slug.join('/');
+  const res = await fetch('http://localhost:3000/api/components', {
+    method: 'GET',
+  });
+  const routes = await res.json();
+  
+  return routes.find((r: { url: string, component: string }) => r.url === path);
+}
+
+export default async function Page({ params }: { params: Promise<{ slug: string[] }> }) {
+  const { slug } = await params;
+  const route = await getRouteConfig(slug);
+
+  if (!route) return notFound();
+
+  console.log('component', route.component);
+
+  const Component = componentMap[route.component];
+
+  if (!Component) return notFound();
+
+  return <Component />;
+}
+```
+
+Hình ảnh chỉ mang tính chất minh hoạ, mời mọi người vào [link demo](https://demo-routing-navigation.netlify.app/dynamic-route/demo1) để xem chi tiết ạ
+
+![demo linking](./images/no-approuter.png)

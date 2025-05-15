@@ -4,13 +4,15 @@ import { Blog } from '@/types';
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
 
-const BlogsPage = () => {
+export default function BlogsPage() {
   const [blogs, setBlogs] = useState<Blog[]>([]);
 
   useEffect(() => {
     const fetchBlogs = async () => {
       try {
-        const response = await fetch('/api/blogs');
+        const response = await fetch('http://localhost:3000/api/blogs', {
+          next: { revalidate: 10 }
+        });
         if (!response.ok) {
           throw new Error('Failed to fetch blogs');
         }
@@ -52,5 +54,3 @@ const BlogsPage = () => {
     </div>
   );
 };
-
-export default BlogsPage;
