@@ -33,7 +33,7 @@ export default function CreateProduct() {
     e.preventDefault();
 
     try {
-      const response = await fetch('/api/products', {
+      const response = await fetch(`${window.location.origin}/api/products`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

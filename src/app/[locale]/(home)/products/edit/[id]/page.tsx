@@ -19,7 +19,7 @@ export default function EditProduct() {
   useEffect(() => {
     const fetchProduct = async () => {
       try {
-        const response = await fetch(`/api/products/${id}`);
+        const response = await fetch(`${window.location.origin}/api/products/${id}`);
         if (!response.ok) {
           throw new Error('Failed to fetch product');
         }

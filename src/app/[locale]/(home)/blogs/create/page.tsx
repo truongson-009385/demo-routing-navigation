@@ -15,7 +15,7 @@ export default function CreateBlog() {
         const newBlog: Omit<Blog, 'id'> = { title, content };
 
         try {
-            const response = await fetch('/api/blogs', {
+            const response = await fetch(`${window.location.origin}/api/blogs`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

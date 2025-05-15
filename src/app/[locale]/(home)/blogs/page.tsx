@@ -10,7 +10,7 @@ export default function BlogsPage() {
   useEffect(() => {
     const fetchBlogs = async () => {
       try {
-        const response = await fetch('http://localhost:3000/api/blogs', {
+        const response = await fetch(`${window.location.origin}/api/blogs`, {
           next: { revalidate: 10 }
         });
         if (!response.ok) {

@@ -17,7 +17,7 @@ export default function Products() {
     const fetchProducts = async () => {
       try {
         const response = await fetch(
-          `http://localhost:3000/api/products?page=${currentPage}&limit=${itemsPerPage}`, {
+          `${window.location.origin}/api/products?page=${currentPage}&limit=${itemsPerPage}`, {
           }
         );
         if (!response.ok) {

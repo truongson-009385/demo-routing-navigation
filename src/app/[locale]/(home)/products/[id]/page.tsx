@@ -8,7 +8,7 @@ export default async function ProductDetail({ params }: { params: Promise<{ id: 
   const { id } = await params;
 
   // Fetch product data from API
-  const response = await fetch(`http://localhost:3000/api/products/${id}`, {
+  const response = await fetch(`${window.location.origin}/api/products/${id}`, {
     method: 'GET',
   });
 
