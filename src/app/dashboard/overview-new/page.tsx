@@ -1,4 +1,4 @@
-export default function OverviewPage({}) {
+export default async function OverviewPage({}) {
     return (
         <div>
             <h1 className="text-3xl font-bold text-gray-800 mb-4">Overview</h1>

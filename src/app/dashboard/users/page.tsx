@@ -1,34 +1,19 @@
-'use client'
+export default async function Page() {
+    try {
+        const response = await fetch(`http://...`, {
+            method: 'GET',
+        });
 
-import { useEffect, useState } from 'react';
-
-export default function Page() {
-    const [users, setUsers] = useState<string[]>([]);
-
-    useEffect(() => {
-        const fetchUsers = async () => {
-            const response = await fetch('/api/users');
-
-            if (!response.ok) {
-                throw new Error('Failed to fetch users');
-            }
-
-            const data: string[] = await response.json();
-            
-            setUsers(data);
-        };
-
-        fetchUsers();
-    }, []);
+        if (!response.ok) {
+            throw new Error('Failed to fetch product data');
+        }
+    } catch {
+        throw new Error('An error occurred while fetching the data');
+    }
 
     return (
         <div>
             <h1>List users</h1>
-            <ul>
-                {users.map((user, index) => (
-                    <li key={index}>{user}</li>
-                ))}
-            </ul>
         </div>
     );
 }

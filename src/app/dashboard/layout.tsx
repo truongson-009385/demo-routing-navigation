@@ -35,6 +35,12 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                                     <Link href="/dashboard/users">Users</Link>
                                 </li>
                                 <li className="px-4 py-2 hover:bg-gray-700">
+                                    <Link href="/dashboard/fake-loading">Fake loading</Link>
+                                </li>
+                                <li className="px-4 py-2 hover:bg-gray-700">
+                                    <Link href="/dashboard/fake-notfound">Fake not found</Link>
+                                </li>
+                                <li className="px-4 py-2 hover:bg-gray-700">
                                     <Link href="/dashboard/logout">Logout</Link>
                                 </li>
                             </ul>

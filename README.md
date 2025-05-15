@@ -571,7 +571,125 @@ Hình ảnh chỉ mang tính chất minh hoạ, mời mọi người vào [link 
 
 ### 4. Error
 
+`Error` hay `error.tsx` là 1 file giao diện mà trong quá trình xử lý logic trang mà gặp lỗi sẽ trả về giao diện này.
+
+```tsx
+// app/dashboard/users/page.tsx
+
+export default async function Page() {
+    try {
+        const response = await fetch(`http://...`, {
+            method: 'GET',
+        });
+
+        if (!response.ok) {
+            throw new Error('Failed to fetch product data');
+        }
+    } catch {
+        throw new Error('An error occurred while fetching the data');
+    }
+
+    return (
+        <div>
+            <h1>List users</h1>
+        </div>
+    );
+}
+```
+
+```tsx
+// app/dashboard/page.tsx
+
+'use client';
+
+export default function Error({ error, reset }: { error: Error; reset: () => void }) {
+  return (
+    <div>
+      <div>
+        <h1>
+          Oops! Something went wrong
+        </h1>
+        <p>
+          {error.message}
+        </p>
+        <button
+          onClick={reset}
+        >
+          Try Again
+        </button>
+      </div>
+    </div>
+  );
+}   
+```
+
+Hình ảnh chỉ mang tính chất minh hoạ, mời mọi người vào [link demo](https://demo-routing-navigation.netlify.app/dashboard/users) để xem chi tiết ạ
+
+![demo linking](./images/giao-dien-4error.gif)
+
 ### 5. Loading
+
+`Loading` hay `loading.tsx` là 1 file giao diện sẽ hiện ra trong lúc tải trang.
+
+```tsx
+// app/dashboard/loading.tsx
+
+export default function Loading() {
+  return (
+    <div>
+      <span>Loading...</span>
+    </div>
+  );
+}
+```
+
+```tsx
+// app/dashboard/fake-loading/page.tsx
+
+export default async function Page() {
+    await new Promise(() => {
+        setTimeout(() => {
+        }, 200)
+    })
+
+    return (
+        <div>
+            Test loading
+        </div>
+    )
+}
+```
+
+Hình ảnh chỉ mang tính chất minh hoạ, mời mọi người vào [link demo](https://demo-routing-navigation.netlify.app/dashboard/fake-loading) để xem chi tiết ạ
+
+![demo linking](./images/giao-dien-5loading.gif)
+
+### 6. Not Found
+
+`Not Found` hay `not-found.tsx` là 1 file giao diện sẽ hiện ra khi trang web không tồn tại (Page 404).
+
+```tsx
+import Link from "next/link";
+
+export default function NotFound() {
+  return (
+    <div>
+      <h1>404</h1>
+      <h2>Page Not Found</h2>
+      <p>
+        Oops! The page you are looking for does not exist or has been moved.
+      </p>
+      <Link href="/">
+        Go Back Home
+      </Link>
+    </div>
+  );
+}
+```
+
+Hình ảnh chỉ mang tính chất minh hoạ, mời mọi người vào [link demo](https://demo-routing-navigation.netlify.app/dashboard/fake-notfound) để xem chi tiết ạ
+
+![demo linking](./images/giao-dien-6notfound.gif)
 
 ## Next Server
 
@@ -586,3 +704,5 @@ Hình ảnh chỉ mang tính chất minh hoạ, mời mọi người vào [link 
 ### 1. Localization - Ngôn ngữ
 
 ## Route không theo thư mục
+
+

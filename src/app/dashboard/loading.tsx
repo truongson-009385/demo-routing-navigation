@@ -1,8 +1,8 @@
 export default function Loading() {
   return (
-    <div className="container mx-auto p-4">
-      <h1 className="text-2xl font-bold mb-4">Loading...</h1>
-      <p className="text-gray-500">Please wait while we load the dashboard.</p>
+    <div className="flex justify-center items-center gap-2 h-64">
+      <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+      <span className="text-1xl font-bold">Loading...</span>
     </div>
   );
 }
