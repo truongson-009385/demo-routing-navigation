@@ -101,7 +101,7 @@ export default async function ProductDetail({ params }: { params: Promise<{ id: 
 }
 ```
 
-Hình ảnh demo:
+Hình ảnh chỉ mang tính chất minh hoạ, mời mọi người vào [link demo](https://demo-routing-navigation.netlify.app/products/1) để xem chi tiết ạ
 
 ![demo linking](./images/file-system-3dynamic-routers.png)
 
@@ -139,7 +139,7 @@ export default function Header() {
 }
 ```
 
-Hình ảnh demo:
+Hình ảnh chỉ mang tính chất minh hoạ, mời mọi người vào [link demo](https://demo-routing-navigation.netlify.app/) để xem chi tiết ạ
 
 ![demo linking](./images/client-side-1linking.png)
 
@@ -170,7 +170,7 @@ export default function About() {
 }
 ```
 
-Hình ảnh demo:
+Hình ảnh chỉ mang tính chất minh hoạ, mời mọi người vào [link demo](https://demo-routing-navigation.netlify.app/about) để xem chi tiết ạ
 
 ![demo linking](./images/client-side-2router-push.png)
 
@@ -195,7 +195,7 @@ export default function Contact() {
 }
 ```
 
-Hình ảnh demo:
+Hình ảnh chỉ mang tính chất minh hoạ, mời mọi người vào [link demo](https://demo-routing-navigation.netlify.app/contact) để xem chi tiết ạ
 
 ![demo linking](./images/client-side-2router-replace.png)
 
@@ -228,7 +228,7 @@ export default function About() {
 }
 ```
 
-Hình ảnh demo:
+Hình ảnh chỉ mang tính chất minh hoạ, mời mọi người vào [link demo](https://demo-routing-navigation.netlify.app/about) để xem chi tiết ạ
 
 ![demo linking](./images/client-side-3window-push.png)
 
@@ -256,7 +256,7 @@ export default function Contact() {
 }
 ```
 
-Hình ảnh demo:
+Hình ảnh chỉ mang tính chất minh hoạ, mời mọi người vào [link demo](https://demo-routing-navigation.netlify.app/contact) để xem chi tiết ạ
 
 ![demo linking](./images/client-side-3window-replace.png)
 
@@ -275,27 +275,299 @@ Redirect là việc chuyển người dùng đến một URL khác, trước ho�
 
 ### 1. redirect function
 
-`redirect` là 1 function có thể sử dụng ở cả môi trường server side và client side
+`redirect('/đường-dẫn')` là 1 function dùng để điều hướng trang, và sử dụng ở cả 3 môi trường là server side, client side và next server.
 
-### 2. Client
+Đặc biệt nó cũng có thể sử dụng phương thức PUSH và REPLACE giống như thằng hook `useRouter`, cú pháp thì chỉ cần thêm đối số RedirectType vào redirect function. Ví dụ `redirect('/đường-dẫn', RedirectType.push)` hoặc `redirect('/đường-dẫn', RedirectType.replace)`.
 
-permanentRedirect
+```tsx
+// app/dashboard/page.tsx
+import { redirect } from "next/navigation";
+import { useEffect } from "react";
+
+export default function Page() {
+  useEffect(() => {
+    // Kiểm tra localStorage khi component mount
+    const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+
+    if (!isLoggedIn) {
+      // Nếu chưa đăng nhập, redirect về trang login
+      redirect('/login');
+    }
+  }, []);
+
+  return (
+    <div>
+      <h1>Dashboard</h1>
+    </div>
+  );
+}
+```
+
+Hình ảnh chỉ mang tính chất minh hoạ, mời mọi người vào [link demo](https://demo-routing-navigation.netlify.app/dashboard) để xem chi tiết ạ
+
+![demo linking](./images/server-side-1redirect-func.gif)
+
+### 2. permanentRedirect function
+
+`permanentRedirect` thằng này giống hệt với `redirect` là 1 function dùng để điều hướng trang, và sử dụng ở cả 3 môi trường là server side, client side và next server.
+
+> Nhưng khác:
+>
+> - `redirect` trả về status code là 307 là tạm thời
+> - `permanentRedirect` trả về status code là 308 là vĩnh viễn
+>
+> Khác status code ở đây nó chỉ ảnh hưởng đến vấn đề SEO. Hiểu đơn giản thì khi muốn đây website lên top tìm kiếm thì Google phải map site các URL của mình. Trường hợp có thể sử dụng 307 là để khi hệ thống bảo trì mà không muốn ảnh hưởng đến ranking trên top tìm kiếm của Google, hoặc 308 là xác định thay đổi vĩnh viễn ví dụ như muốn đổi qua domain khác thì Google sẽ không map đến cái site đó nữa
+
+```tsx
+// app/dashboard/old/page.tsx
+import { permanentRedirect } from "next/navigation";
+
+export default function Page() {
+    permanentRedirect("/dashboard/new");
+
+    return (
+        <>
+            <h1>Old Page</h1>
+        </>
+    );
+}
+```
+
+```tsx
+// app/dashboard/new/page.tsx
+export default function Page() {
+  return (
+    <>
+      <h1>New Page</h1>
+    </>
+  );
+}
+```
 
 ### 3. Next config
 
-redirects in next.config.js
+`redirects in next.config.js` giống với `redirect` và `permanentRedirect` giúp điều hướng trang và sẽ trả về status 307(tạm thời) và 308(vĩnh viễn), nhưng khác là chúng ta sẽ cấu hình luôn ở file config.
 
-### 4. Middleware
+```plaintext
+/app
+├── dashboard
+│   ├── overview
+│   ├── ├── page.tsx
+|   ├── overview-new
+│   ├── ├── page.tsx
+```
 
-NextResponse.redirect in Middleware
+```ts
+import type { NextConfig } from "next";
+
+const nextConfig: NextConfig = {
+  async redirects() {
+    return [
+      {
+        source: '/dashboard/overview',
+        destination: '/dashboard/overview-new',
+        permanent: true, // Code 308 - Điều hướng vĩnh viễn
+      },
+    ]
+  },
+};
+
+export default nextConfig;
+```
 
 ## Giao diện
 
 ### 1. Layout & Page
 
+`Layout` hay `layout.tsx` là phần giao diện bên ngoài bao bọc nội dung.
+
+```tsx
+// app/dashboard/layout.tsx
+
+import Header from "@/components/layout/header";
+
+export default function DashboardLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
+  return (
+    <html lang="en">
+      <body>
+        <Header />
+        <div>
+          {children}
+        </div>
+      </body>
+    </html>
+  );
+}
+```
+
+```tsx
+// app/dashboard/profile/page.tsx
+
+export default function Page() {
+    return (
+        <div>
+            //Nội dung
+        </div>
+    );
+}
+```
+
+Hình ảnh chỉ mang tính chất minh hoạ, mời mọi người vào [link demo](https://demo-routing-navigation.netlify.app/dashboard/profile) để xem chi tiết ạ
+
+![demo linking](./images/giao-dien-1layout&page.png)
+
 ### 2. Template
 
-### 3. Parallel
+`Template` hay `template.tsx` giống với Layout là phần giao diện bên ngoài bao bọc nội dung.
+
+> Nhưng cách hoạt động khác:
+> Layout → Template → Page
+
+```tsx
+// app/dashboard/layout.tsx
+
+import Header from "@/components/layout/header";
+
+export default function DashboardLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
+  console.log('Render layout!!!');
+
+  return (
+    <html lang="en">
+      <body>
+        <Header />
+        <div>
+          {children}
+        </div>
+      </body>
+    </html>
+  );
+}
+```
+
+```tsx
+export default function DashboardTemplate({ children }: { children: React.ReactNode }) {
+  console.log('Render template!!!');
+
+  return (
+    <div>
+      <aside>
+        <div>
+          <h1>Dashboard</h1>
+          <nav>
+            <ul className="flex space-x-4">
+              <li><a href="#">Home</a></li>
+              <li><a href="#">Profile</a></li>
+              <li><a href="#">Settings</a></li>
+            </ul>
+          </nav>
+        </div>
+      </aside>
+      <main>{children}</main>
+    </div>
+  );
+}
+```
+
+```tsx
+// app/dashboard/profile/page.tsx
+
+export default function Page() {
+    console.log('Render page!!!');
+
+    return (
+        <div>
+            //Nội dung
+        </div>
+    );
+}
+```
+
+Hình ảnh chỉ mang tính chất minh hoạ, mời mọi người vào [link demo](https://demo-routing-navigation.netlify.app/dashboard/profile) để xem chi tiết ạ
+
+![demo linking](./images/giao-dien-2template-log.png)
+
+![demo linking](./images/giao-dien-2template-minhhoa.png)
+
+### 3. Parallel Routes
+
+`Parallel Routes` cho phép chúng ta hiển thị cùng lúc nhiều nội dung độc lập, hiểu đơn giản hơn là các slot(trang con) hoạt động độc lập được chèn vào bên trong trang.
+
+Lý do cần dùng thằng này vì nó cho phép tải song song cùng lúc nhiều routes(là các slot) rồi hiển thị trên 1 trang giúp tăng hiệu suất tải trang, ứng dụng 1 số trường hợp như: lấy dữ liệu từ mạng xã hội, hiển thị nhiều nội dung, ...
+
+Tạo thư mục `@slot` trang con
+
+```plaintext
+/app
+├── dashboard
+|   ├── overview-new
+│   ├── ├── @table1
+│   ├── ├── ├── page.tsx
+│   ├── ├── @table2
+│   ├── ├── ├── page.tsx
+│   ├── ├── layout.tsx
+│   ├── ├── page.tsx
+```
+
+> Lưu ý: @slot chỉ có thể sử dụng trong file layout.tsx
+
+```tsx
+// app/dashboard/overview-new/@table1/page.tsx
+export default function Page() {
+    return (
+        <div>
+            <h2>Table 1</h2>
+            <table></table>
+            </table>
+        </div>
+    )
+}
+
+// app/dashboard/overview-new/@table2/tsx
+export default function Page() {
+    return (
+        <div>
+            <h2>Table 2</h2>
+            <table></table>
+            </table>
+        </div>
+    )
+}
+```
+
+```tsx
+// app/dashboard/overview-new/layout.tsx
+export default function OverviewLayout({
+    children,
+    table1,
+    table2,
+}: {
+    children: React.ReactNode,
+    table1: React.ReactNode,
+    table2: React.ReactNode,
+}) {
+    return (
+        <div>
+            <div>{children}</div> //page.tsx
+            <div>
+                <div>{table1}</div> //@table1/page.tsx
+                <div>{table2}</div> //@table2/page.tsx
+            </div>
+        </div>
+    );
+}
+```
+
+Hình ảnh chỉ mang tính chất minh hoạ, mời mọi người vào [link demo](https://demo-routing-navigation.netlify.app/dashboard/overview-new) để xem chi tiết ạ
+
+![demo linking](./images/giao-dien-3parallel-routes.png)
 
 ### 4. Error
 

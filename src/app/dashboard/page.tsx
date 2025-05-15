@@ -1,20 +1,18 @@
 'use client';
 
-// import { useRouter } from "next/navigation";
-// import { useEffect } from "react";
+import { redirect } from "next/navigation";
+import { useEffect } from "react";
 
 export default function Page() {
-  // const router = useRouter();
+  useEffect(() => {
+    // Kiểm tra localStorage khi component mount
+    const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
 
-  // useEffect(() => {
-  //   // Kiểm tra localStorage khi component mount
-  //   const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
-
-  //   if (!isLoggedIn) {
-  //     // Nếu chưa đăng nhập, redirect về trang login
-  //     router.push('/login');
-  //   }
-  // }, [router]);
+    if (!isLoggedIn) {
+      // Nếu chưa đăng nhập, redirect về trang login
+      redirect('/login');
+    }
+  }, []);
 
   // console.log('Dashboard Page');
 

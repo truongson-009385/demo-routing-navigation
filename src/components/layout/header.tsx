@@ -1,13 +1,9 @@
 'use client'
 
+import Link from "next/link";
 import NavLink from "../ui/navlink";
 
 export default function Header() {
-
-    const handleOpenWindow = () => {
-        window.open("/login", "_blank", "width=600,height=400");
-    };
-
     return (
         <header>
             <div className="flex items-center justify-between p-4 shadow-md bg-slate-800">
@@ -52,9 +48,9 @@ export default function Header() {
                             </NavLink>
                         </li>
                         <li>
-                            <button onClick={() => handleOpenWindow()} className="btn-primary">
-                                Login
-                            </button>
+                            <Link className="btn-primary" href="/dashboard">
+                                Dashboard
+                            </Link>
                         </li>
                     </ul>
                 </nav>

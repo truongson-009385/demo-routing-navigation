@@ -32,6 +32,9 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                                     <Link href="/dashboard/profile">Profile</Link>
                                 </li>
                                 <li className="px-4 py-2 hover:bg-gray-700">
+                                    <Link href="/dashboard/users">Users</Link>
+                                </li>
+                                <li className="px-4 py-2 hover:bg-gray-700">
                                     <Link href="/dashboard/logout">Logout</Link>
                                 </li>
                             </ul>

@@ -1,9 +1,6 @@
-'use client'
-
 export default function DashboardTemplate({ children }: { children: React.ReactNode }) {
 
   console.log('Render template!!!');
-  console.log('children', children);
 
   return (
     <div>

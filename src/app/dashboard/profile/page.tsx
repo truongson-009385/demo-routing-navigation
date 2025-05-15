@@ -1,9 +1,6 @@
-'use client'
+export default function Page() {
+    console.log('Render page!!!');
 
-import { redirect } from 'next/navigation'
-
-export default function ProfilePage() {
-    redirect('/login');
     return (
         <div className="">
             <div className="bg-white shadow-md rounded-lg p-8 w-full">

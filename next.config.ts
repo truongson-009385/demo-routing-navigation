@@ -20,6 +20,15 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  async redirects() {
+    return [
+      {
+        source: '/dashboard/overview',
+        destination: '/dashboard/overview-new',
+        permanent: true, // Status code 308 - Điều hướng vĩnh viễn
+      },
+    ]
+  },
 };
 
 export default nextConfig;
