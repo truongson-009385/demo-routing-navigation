@@ -10,7 +10,7 @@ Tài liệu này cung cấp một số khái niệm và ví dụ cụ thể  v�
 - [Server Side - Điều hướng](#server-side---điều-hướng)
 - [Giao diện](#giao-diện)
 - [Next Server](#next-server)
-- [Other](#other)
+- [Localization - Ngôn ngữ](#localization---ngôn-ngữ)
 - [Route không theo thư mục](#route-không-theo-thư-mục)
 
 ---------------
@@ -904,9 +904,7 @@ export async function GET(request: Request) {
 }
 ```
 
-## Other
-
-### 1. Localization - Ngôn ngữ
+## Localization - Ngôn ngữ
 
 `Phần đa ngôn ngữ` - `i18n` này chúng ta sẽ sử dụng thư viện `next-intl` để thiết kế bộ ngôn ngữ riêng và chuyển đổi nó. Quá trình cài đặt khá phức tạp nên mình chỉ làm demo và gửi anh em [link](https://next-intl.dev/docs/getting-started/app-router/with-i18n-routing) tải nhé.
 
@@ -942,7 +940,7 @@ Hình ảnh chỉ mang tính chất minh hoạ, mời mọi người vào [link 
 
 ![demo linking](./images/i18n.gif)
 
-### 2. Route không theo thư mục
+## Route không theo thư mục
 
 Sau đây là phần điều hướng không theo cấu trúc thư mục:
 
