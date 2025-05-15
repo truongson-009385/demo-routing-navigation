@@ -6,8 +6,8 @@ Tài liệu này cung cấp một số khái niệm và ví dụ cụ thể  v�
 
 - [Hướng dẫn chạy dự án](#hướng-dẫn-chạy-dự-án)
 - [File-system - Route theo thư mục](#file-system---route-theo-thư-mục)
-- [Navigation - Điều hướng](#navigation---điều-hướng)
-- [Redirecting - Chuyển hướng](#redirecting---chuyển-hướng)
+- [Client Side - Điều hướng](#client-side---điều-hướng)
+- [Server Side - Điều hướng](#server-side---điều-hướng)
 - [Giao diện](#giao-diện)
 - [Next Server](#next-server)
 - [Other](#other)
@@ -101,11 +101,15 @@ export default async function ProductDetail({ params }: { params: Promise<{ id: 
 }
 ```
 
+Hình ảnh demo:
+
+![demo linking](./images/file-system-3dynamic-routers.png)
+
 ### 4. Chặn route
 
 Khái niệm về `Intercepting Routes` dùng để chặn một yêu cầu đi đến route cụ thể và thay đổi hành vi của nó, thường sử dụng để hiển thị 1 nội dung khác hoặc xử lý logic mà không thay đổ URL. Một số ứng dụng thực tế như: modal, drawer, tab, ...
 
-## Navigation - Điều hướng
+## Client Side - Điều hướng
 
 Navigation - Điều hướng là quá trình chuyển sang 1 trang khác mà không cần phải tải lại toàn bộ trang. Cách này chỉ được sử dụng khi người dùng tác động
 
@@ -135,9 +139,15 @@ export default function Header() {
 }
 ```
 
+Hình ảnh demo:
+
+![demo linking](./images/client-side-1linking.png)
+
 ### 2. Navigation
 
 Sử dụng hook `useRouter` của `"next/navigation"` để trong xử lý logic hoặc handler sự kiện trong môi trường client side. Dùng để điều hướng đến một URL mới ở trang hiện tại, và sẽ có 2 cách chính là `push`, `replace`
+
+>Lưu ý: `useRouter` chỉ được sử dụng trong môi trường client side, và khi import tránh nhầm thằng `"next/router"` vì cái mình cần dùng là `"next/navigation"`
 
 `router.push('/new-url')` dùng khi muốn điều hướng sang trang mới và đồng thời thêm mới đường dẫn thay đổi vào lịch sử trình duyệt trình duyệt
 
@@ -160,6 +170,10 @@ export default function About() {
 }
 ```
 
+Hình ảnh demo:
+
+![demo linking](./images/client-side-2router-push.png)
+
 `router.replace('/updated-url')` cái cũng sẽ điều hướng sang trang mới, nhưng khác `push` ở chỗ ở `push` sẽ tạo mới lịch sử nhưng cái này sẽ cập nhật lại url trang hiện tại trong lịch sử trình duyệt
 
 ```tsx
@@ -180,6 +194,10 @@ export default function Contact() {
   );
 }
 ```
+
+Hình ảnh demo:
+
+![demo linking](./images/client-side-2router-replace.png)
 
 Thằng hook `useRouter` của `"next/navigation"` vẫn còn một số thuộc tính như: pathname, query, asPath, isFallback để lấy thông tin URL hay các phương thức khác như: back(), reload(), prefetch().  Vì nó không liên quan lắm đến phần này nên mình sẽ không đưa vào để tránh loạn, anh em chịu khó tìm hiểu thêm sau nhé
 
@@ -210,6 +228,10 @@ export default function About() {
 }
 ```
 
+Hình ảnh demo:
+
+![demo linking](./images/client-side-3window-push.png)
+
 `replaceState(stateObj, title, url)` Cái này nó sẽ thay thế URL trang hiện tại và thay thế cả trong lịch sử trình duyệt
 
 ```tsx
@@ -234,6 +256,10 @@ export default function Contact() {
 }
 ```
 
+Hình ảnh demo:
+
+![demo linking](./images/client-side-3window-replace.png)
+
 ### 3. So sánh giữa các phương thức thay đổi URL
 
 | Phương thức               | Thay đổi URL | Điều hướng | Lịch sử trình duyệt | Tương thích Next.js Router | Ghi chú |
@@ -243,13 +269,13 @@ export default function Contact() {
 | `window.history.pushState` | ✅ Có        | ❌ Không     | ✅ Thêm đường dẫn mới       | ❌ Không đồng bộ | Thêm URL mới vào lịch sử trình duyệt |
 | `router.push()` (Next.js)  | ✅ Có        | ✅ Có     | ✅ Thêm đường dẫn mới       | ✅ Có (đồng bộ) | Đồng bộ với Next.js Router, hỗ trợ tải trước trang |
 
-## Redirecting - Chuyển hướng
+## Server Side - Điều hướng
 
 Redirect là việc chuyển người dùng đến một URL khác, trước hoặc trong lúc trang đang load. Có thể sử dụng ở 2 môi trường server và client
 
-### 1. Server
+### 1. redirect function
 
-redirect
+`redirect` là 1 function có thể sử dụng ở cả môi trường server side và client side
 
 ### 2. Client
 
