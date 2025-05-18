@@ -5,10 +5,11 @@ import { Product } from '@/types';
 import Image from 'next/image';
 
 export default async function ProductDetail({ params }: { params: Promise<{ id: string }> }) {
+  
   const { id } = await params;
-
+  
   // Fetch product data from API
-  const response = await fetch(`${window.location.origin}/api/products/${id}`, {
+  const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/products/${id}`, {
     method: 'GET',
   });
 
@@ -44,18 +45,16 @@ export default async function ProductDetail({ params }: { params: Promise<{ id: 
             ${product.price.toFixed(2)}
           </p>
           <p
-            className={`text-lg font-medium ${
-              product.inStock ? 'text-green-500' : 'text-red-500'
-            }`}
+            className={`text-lg font-medium ${product.inStock ? 'text-green-500' : 'text-red-500'
+              }`}
           >
             {product.inStock ? 'In Stock' : 'Out of Stock'}
           </p>
           <button
-            className={`mt-6 px-6 py-3 rounded-lg text-white font-semibold ${
-              product.inStock
+            className={`mt-6 px-6 py-3 rounded-lg text-white font-semibold ${product.inStock
                 ? 'bg-blue-600 hover:bg-blue-700'
                 : 'bg-gray-400 cursor-not-allowed'
-            }`}
+              }`}
             disabled={!product.inStock}
           >
             {product.inStock ? 'Add to Cart' : 'Unavailable'}

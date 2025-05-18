@@ -14,7 +14,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         <html lang="en">
             <body className="antialiased">
                 <div className="flex min-h-screen">
-                    <aside className="w-64 bg-gray-800 text-white">
+                    <aside className="w-64 bg-gray-950 text-white">
                         <div className="p-4 text-lg font-bold">
                             <Link href="/dashboard" className="text-white hover:text-gray-300">
                                 Dashboard
@@ -41,7 +41,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                                     <Link href="/dashboard/fake-notfound">Fake not found</Link>
                                 </li>
                                 <li className="px-4 py-2 hover:bg-gray-700">
-                                    <Link href="/dashboard/logout">Logout</Link>
+                                    <Link href="/logout">Logout</Link>
                                 </li>
                             </ul>
                         </nav>

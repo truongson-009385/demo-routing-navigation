@@ -13,7 +13,7 @@ async function getRouteConfig(slug: string[]) {
     method: 'GET',
   });
   const routes = await res.json();
-  
+
   return routes.find((r: { url: string, component: string }) => r.url === path);
 }
 

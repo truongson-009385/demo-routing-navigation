@@ -1,3 +1,5 @@
+import { ServerError } from "@/libs/exceptions";
+
 export default async function Page() {
     try {
         const response = await fetch(`http://...`, {
@@ -8,7 +10,7 @@ export default async function Page() {
             throw new Error('Failed to fetch product data');
         }
     } catch {
-        throw new Error('An error occurred while fetching the data');
+        throw new ServerError('An error occurred while fetching the data');
     }
 
     return (

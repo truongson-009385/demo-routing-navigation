@@ -4,7 +4,10 @@ import { blogs } from './db';
 
 // GET: Lấy ra danh sách các bài viết
 export async function GET() {
-    return NextResponse.json(blogs);
+    return NextResponse.json({
+        data: blogs,
+        message: 'Get all blogs successfully',
+    });
 }
 
 // POST: Tạo mới một bài viết

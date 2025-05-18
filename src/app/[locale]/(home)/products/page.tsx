@@ -17,7 +17,14 @@ export default function Products() {
     const fetchProducts = async () => {
       try {
         const response = await fetch(
-          `${window.location.origin}/api/products?page=${currentPage}&limit=${itemsPerPage}`, {
+          `${process.env.NEXT_PUBLIC_BASE_URL}/api/products?page=${currentPage}&limit=${itemsPerPage}`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            // Cache for 60 seconds
+            next: { revalidate: 60 },
           }
         );
         if (!response.ok) {
@@ -69,7 +76,7 @@ export default function Products() {
       return;
     }
     try {
-      const response = await fetch(`http://localhost:3000/api/products/${id}`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/products/${id}`, {
         method: "DELETE",
       });
       if (!response.ok) {

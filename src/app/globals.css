@@ -29,4 +29,15 @@ body {
   .btn-primary {
     @apply bg-blue-500 text-white font-bold py-2 px-4 rounded hover:bg-blue-700;
   }
+
+  .container {
+    @apply mx-auto px-4 sm:px-6 lg:px-8;
+  }
+
+  @media screen and (min-width: 640px) {
+    .container {
+      @apply max-w-2xl;
+    }
+    
+  }
 }

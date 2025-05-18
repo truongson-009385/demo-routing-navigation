@@ -5,8 +5,8 @@ export default async function Page() {
 
     return (
         <Suspense fallback={<div>Loading profile...</div>}>
-            <div className="">
-                <div className="bg-white shadow-md rounded-lg p-8 w-full">
+            <div className="bg-green-500">
+                <div className="bg-green-500 shadow-md rounded-lg p-8 w-full">
                     <h1 className="text-2xl font-bold text-gray-800 mb-4">Profile</h1>
                     <div className="space-y-4">
                         <div>

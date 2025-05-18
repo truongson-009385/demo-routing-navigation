@@ -4,7 +4,7 @@ export default function DashboardTemplate({ children }: { children: React.ReactN
 
   return (
     <div>
-      <header className="bg-blue-600 text-white p-4 shadow-md">
+      <header className="bg-blue-950 text-white p-4 shadow-md">
         <div className="container mx-auto flex justify-between items-center">
           <h1 className="text-xl font-bold">Dashboard</h1>
           <nav>
